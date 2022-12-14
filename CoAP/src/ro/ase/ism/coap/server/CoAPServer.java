@@ -45,7 +45,7 @@ public class CoAPServer implements CoapServer {
 
             String decryptedPayload = Utils.decrypt(payload);
 
-            System.out.println("Reveived Payload: " + decryptedPayload);
+            System.out.println("Received Payload: " + decryptedPayload);
 
             CoapMessage response = channel.createResponse(request,
                     CoapResponseCode.Content_205);

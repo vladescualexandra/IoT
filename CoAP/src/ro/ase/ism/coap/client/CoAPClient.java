@@ -6,19 +6,14 @@ import org.ws4d.coap.messages.CoapRequestCode;
 import ro.ase.ism.coap.common.Env;
 import ro.ase.ism.coap.common.Utils;
 
-import javax.crypto.SecretKey;
-import javax.crypto.spec.IvParameterSpec;
 import java.net.InetAddress;
-import java.nio.charset.StandardCharsets;
 import java.util.Scanner;
 
 public class CoAPClient implements CoapClient {
-    private static final byte[] PoC_TOKEN = "PoCToken".getBytes(StandardCharsets.UTF_8);
     private static final String PoC_ENDPOINT = "/security/";
 
     CoapChannelManager channelManager = null;
     CoapClientChannel clientChannel = null;
-
 
     public static void main(String[] args) {
         System.out.println("Start CoAP Client: " + Env.SERVER_ADDRESS + ":" + Env.PORT);
@@ -36,22 +31,15 @@ public class CoAPClient implements CoapClient {
 
             // Build CoAP Request.
             CoapRequest request = clientChannel.createRequest(true, CoapRequestCode.POST);
-            request.setToken(PoC_TOKEN);
             request.setUriPath(PoC_ENDPOINT);
 
-            boolean on = true;
-            while (on) {
-
+            while (true) {
                 Thread.sleep(1000);
 
                 Scanner scanner = new Scanner(System.in);
                 System.out.println("-".repeat(20));
                 System.out.print("Enter your payload: ");
                 String payload = scanner.nextLine();
-
-                if (payload.equals("quit") || payload.equals("exit")) {
-                    on = false;
-                }
 
                 String encryptedPayload = Utils.encrypt(payload);
                 System.out.println("Encrypted Payload: " + encryptedPayload);
